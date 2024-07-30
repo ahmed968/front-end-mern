@@ -1,0 +1,290 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar {
+  height: 60px;
+  padding: 0.5rem 1rem;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+  background-color: #000;
+}
+
+.logo-container {
+  position: relative;
+  height: 60px;
+  overflow: visible;
+}
+
+.navbar-logo {
+  height: 210px;
+  width: auto;
+  max-width: 400px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.navbar-collapse {
+  margin-left: 420px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin-left: 1.5rem;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.btn {
+  padding: 0.8rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.btn-warning {
+  background-color: #d5001c;
+  border-color: #d5001c;
+}
+
+.cart-icon-container {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  position: relative;
+}
+
+.cart-icon {
+  font-size: 1.2rem;
+}
+
+.cart-counter {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #d5001c;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  flex-grow: 1;
+  max-width: 300px;
+}
+
+.search-form .form-control {
+  width: 100%;
+  background-color: #333;
+  border: none;
+  color: #fff;
+  transition: width 0.3s ease;
+}
+
+.search-form .form-control::placeholder {
+  color: #aaa;
+}
+
+.search-form .btn-outline-light {
+  border-color: #555;
+  white-space: nowrap;
+}
+
+.search-form .btn-outline-light:hover {
+  background-color: #555;
+}
+
+.lg-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.lg {
+  max-width: 250px;
+  height: auto;
+}
+
+.search-and-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Add spacing between navbar elements */
+.navbar .d-flex.align-items-center {
+  gap: 1rem;
+}
+
+/* Add specific spacing for buttons */
+.navbar .btn {
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 992px) {
+  .navbar-collapse {
+    margin-left: 0;
+    flex-direction: column;
+  }
+
+  .lg-container {
+    margin-bottom: 1rem;
+  }
+
+  .search-and-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .search-form {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+    padding: 0.5rem;
+  }
+
+  .logo-container {
+    height: 50px;
+  }
+
+  .navbar-logo {
+    height: 150px;
+    max-width: 300px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .navbar-collapse {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 1rem;
+  }
+
+  .navbar-collapse.show {
+    display: block;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+  }
+
+  .nav-item {
+    margin: 0.5rem 0;
+  }
+
+  .navbar .d-flex.align-items-center {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .search-form {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-form .form-control {
+    width: 100%;
+  }
+
+  .cart-icon-container {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .navbar .btn {
+    display: block;
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .lg-container {
+    margin-bottom: 1rem;
+  }
+
+  .lg {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar-logo {
+    height: 120px;
+    max-width: 240px;
+  }
+
+  .search-form {
+    max-width: 100%;
+  }
+
+  .search-form .form-control {
+    font-size: 14px;
+  }
+
+  .search-form .btn-outline-light {
+    padding: 0.4rem 0.8rem;
+    font-size: 14px;
+  }
+
+  .lg {
+    max-width: 150px;
+  }
+}
