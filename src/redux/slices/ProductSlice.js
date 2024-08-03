@@ -5,7 +5,7 @@ export const GetProducts = createAsyncThunk(
   "Products/get",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await axios.get("/user/getproduct");
+      const res = await axios.get("http://localhost:5000/api/user/getproduct");
       return res.data;
     } 
     catch (error) {
@@ -21,7 +21,7 @@ export const searchProducts = createAsyncThunk(
       if (!searchTerm.trim()) {
         return { products: null, searchMessage: "Please enter a search term" };
       }
-      const res = await axios.get(`/user/searchproduct?term=${searchTerm}`);
+      const res = await axios.get(`http://localhost:5000/api/user/searchproduct?term=${searchTerm}`);
       return { ...res.data, searchMessage: null };
     } 
     catch (error) {

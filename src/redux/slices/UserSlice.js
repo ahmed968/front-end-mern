@@ -5,7 +5,7 @@ export const RegisterUser = createAsyncThunk(
   "user/register",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await axios.post("/user/register", data);
+      const res = await axios.post("http://localhost:5000/api/user/register", data);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("isAuth", "true");
       return res.data;
@@ -19,7 +19,7 @@ export const LoginUser = createAsyncThunk(
   "user/login",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await axios.post("/user/login", data);
+      const res = await axios.post("http://localhost:5000/api/user/login", data);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("isAuth", "true");
       return res.data;
@@ -33,7 +33,7 @@ export const GoogleLogin = createAsyncThunk(
   "user/googleLogin",
   async (tokenId, { rejectWithValue }) => {
     try {
-      const res = await axios.post("/user/google-auth", { tokenId });
+      const res = await axios.post("http://localhost:5000/api/user/google-auth", { tokenId });
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("isAuth", "true");
       return res.data;

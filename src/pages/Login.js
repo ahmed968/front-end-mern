@@ -6,32 +6,36 @@ import { LoginUser, GoogleLogin } from '../redux/slices/UserSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { GoogleLogin as GoogleLoginButton } from 'react-google-login';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Login.css';
 
-// Main Login component
 const Login = () => {
-  // Redux state and hooks
-  const { isAuth, isLoading } = useSelector((state) => state.user);
+  const { isAuth, isLoading, errors: loginErrors } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  // React Hook Form setup
   const { register, handleSubmit, formState: { errors } } = useForm();
   
-  // Local state
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  // Redirect if user is already authenticated
   useEffect(() => {
     if (isAuth) {
-      navigate('/home');
+      toast.success('Login successful!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setTimeout(() => navigate('/home'), 3000);
     }
   }, [isAuth, navigate]);
 
-  // Load remembered email on component mount
   useEffect(() => {
     const savedEmail = localStorage.getItem('rememberedEmail');
     if (savedEmail) {
@@ -40,7 +44,19 @@ const Login = () => {
     }
   }, []);
 
-  // Form submission handler
+  useEffect(() => {
+    if (loginErrors) {
+      toast.error(loginErrors, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  }, [loginErrors]);
+
   const onSubmit = (data) => {
     if (rememberMe) {
       localStorage.setItem('rememberedEmail', data.email);
@@ -50,17 +66,25 @@ const Login = () => {
     dispatch(LoginUser(data));
   };
 
-  // Google login handlers
   const handleGoogleSuccess = (response) => {
     dispatch(GoogleLogin(response.tokenId));
   };
 
   const handleGoogleFailure = (error) => {
     console.error('Google Sign-In Error:', error);
+    toast.error('Google Sign-In failed. Please try again.', {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
   return (
-    <section className="vh-100 gradient-custom ">
+    <section className="vh-100 gradient-custom">
+      <ToastContainer />
       <div className="container py-5 h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -70,50 +94,50 @@ const Login = () => {
                   <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
                   <p className="text-white-50 mb-5">Please enter your login and password!</p>
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* Email input */}
                     <div className="form-outline form-white mb-4">
-                      <input
-                        type="email"
-                        id="typeEmailX"
-                        className="form-control form-control-lg custom-input"
-                        {...register('email', { required: true })}
-                        value={emailValue}
-                        onChange={(e) => setEmailValue(e.target.value)}
-                        placeholder="Email"
-                      />
-                      {errors.email && <span className="text-danger">Please enter a valid email address.</span>}
+                      <div className="input-wrapper">
+                        <input
+                          type="email"
+                          id="typeEmailX"
+                          className={`form-control form-control-lg custom-input ${errors.email ? 'is-invalid' : ''}`}
+                          {...register('email', { required: true })}
+                          value={emailValue}
+                          onChange={(e) => setEmailValue(e.target.value)}
+                          placeholder="Email"
+                        />
+                      </div>
+                      {errors.email && <div className="error-message">Please enter a valid email address.</div>}
                     </div>
-                    {/* Password input */}
-                    <div className="form-outline form-white mb-4 password-input-wrapper">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        id="typePasswordX"
-                        className="form-control form-control-lg custom-input"
-                        {...register('password', {
-                          required: true,
-                          minLength: 5,
-                          maxLength: 12,
-                          pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/i,
-                        })}
-                        value={passwordValue}
-                        onChange={(e) => setPasswordValue(e.target.value)}
-                        placeholder="Password"
-                      />
-                      {/* Toggle password visibility */}
-                      <span 
-                        className="password-toggle-icon"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                      </span>
+                    <div className="form-outline form-white mb-4">
+                      <div className="input-wrapper">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="typePasswordX"
+                          className={`form-control form-control-lg custom-input ${errors.password ? 'is-invalid' : ''}`}
+                          {...register('password', {
+                            required: true,
+                            minLength: 5,
+                            maxLength: 12,
+                            pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/i,
+                          })}
+                          value={passwordValue}
+                          onChange={(e) => setPasswordValue(e.target.value)}
+                          placeholder="Password"
+                        />
+                        <span 
+                          className="password-toggle-icon"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                        </span>
+                      </div>
                       {errors.password && (
-                        <span className="text-danger">
+                        <div className="error-message">
                           Password must be between 5 and 12 characters, contain at least one uppercase letter, one
                           lowercase letter, and one number.
-                        </span>
+                        </div>
                       )}
                     </div>
-                    {/* Remember Me checkbox */}
                     <div className="form-check mb-4 text-start">
                       <input
                         className="form-check-input"
@@ -126,13 +150,11 @@ const Login = () => {
                         Remember Me
                       </label>
                     </div>
-                    {/* Forgot password link */}
                     <p className="small mb-5 pb-lg-2">
                       <a href="#!" className="text-white-50">
                         Forgot password?
                       </a>
                     </p>
-                    {/* Login button */}
                     <button className="btn btn-outline-light btn-lg px-5" type="submit" disabled={isLoading}>
                       {isLoading ? (
                         <div className="spinner-container">
@@ -142,7 +164,6 @@ const Login = () => {
                         'Login'
                       )}
                     </button>
-                    {/* Google Login button */}
                     <div className="d-flex justify-content-center text-center mt-4 pt-1">
                       <GoogleLoginButton
                         clientId="YOUR_GOOGLE_CLIENT_ID"
@@ -155,7 +176,6 @@ const Login = () => {
                     </div>
                   </form>
                 </div>
-                {/* Sign Up link */}
                 <div>
                   <p className="mb-0">
                     Don't have an account?{' '}
